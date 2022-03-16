@@ -86,7 +86,7 @@ Once all the parts have been received the following processing should be done:
 1. install required tools:
     - Install [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
     - Install [Putty and PSCP](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
-2. Build and publish [custom IoT Edge module](https://github.com/iot-for-all/iotedge-gateway-file-upload-c2d/tree/main/edge-gateway-modules/receive-files/README.md)
+2. Build and publish [custom IoT Edge module](https://github.com/iot-for-all/iotedge-gateway-file-upload-c2d/blob/master/edge-gateway-modules/README.md)
 2. Create free or standard IoT hub using [Azure portal](https://ms.portal.azure.com/)
 3. In the [Azure portal](https://ms.portal.azure.com/), navigate to your IoT hub
 4. Select IoT Edge from the navigation menu
@@ -119,7 +119,7 @@ Once all the parts have been received the following processing should be done:
 10. Click on Review + Create then Create. 
 11. Note the IoT Edge device connection string
 12. [Create and provision a single Linux IoT Edge device](edgevm.md)
-13. [Build and execute script](https://github.com/iot-for-all/iotedge-gateway-file-upload-c2d/tree/main/app/README.md) to send the files
+13. [Build and execute script](https://github.com/iot-for-all/iotedge-gateway-file-upload-c2d/blob/master/app/README.md) to send the files
 14. SSH in to IoT Edge Gateway device (using Putty) and verify the files are created in /etc/files folder:
     ```Linux
     ls /etc/files
