@@ -5,7 +5,7 @@
 - Install pip from [here](https://www.makeuseof.com/tag/install-pip-for-python/)
 
 ## Build and publish OPC UA crud module
-1. Copy the [provided folder](https://github.com/iot-for-all/iotedge-gateway-file-upload-c2d/tree/main/app) to your development machine and open it in VSCode
+1. Copy the [provided folder](https://github.com/iot-for-all/iotedge-gateway-file-upload-c2d/tree/master/app) to your development machine and open it in VSCode
 2. Install necessary packages by executing the following commans:
     ```python
     pip install -r requirements.txt
