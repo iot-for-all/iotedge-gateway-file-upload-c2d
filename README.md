@@ -8,8 +8,8 @@ Uploading large payloads to IoT Edge device, it has typically been achieved by u
 This sample shows how you can push large payloads up to IoT Edge device from cloud using the standard IoT transports (MQTT, AMQP, HTTPS) and without the need to open a second connection.
 
 ## How it works
-## Option 1: Using Direct Method call
-Using device SDK, connect to IoT Edge and execute a Method Call. This can be done using IoT Hub connection string. Once connected, cloud can call method on IoT Edge as normal.  When a large payload needs to be transmitted to IoT Edge it is chunked into smaller payloads of 125KB and custom properties are added to the payloads indicating the file properties.
+## Option 1: Using DirectMethod
+Using device SDK, connect to IoT Edge and execute a DirectMethod. This can be done using IoT Hub SDK and connection string. Once connected, cloud can call DirectMethod on IoT Edge as normal.  When a large payload needs to be transmitted to IoT Edge it is chunked into smaller payloads of 125KB and custom properties are added to the payloads indicating the file properties.
 
 The custom properties are as follows (all properties are required):
 
@@ -54,7 +54,7 @@ An example of the payload would look like this:
 ```
 
 ### From the IoT Edge side
-Receiving IoT Edge module method request handler filters on the message property 'multipart-config-message' equals 'yes' and re-construct the payload form the received data chunks. IoT Edge module should process the files at a minimum as follows for each incoming payload chunk:
+Receiving IoT Edge module DirectMethod request handler filters on the message property 'multipart-config-message' equals 'yes' and re-construct the payload form the received data chunks. IoT Edge module should process the files at a minimum as follows for each incoming payload chunk:
 
 <ol>
 <li> Cache the payload chunk in memory with a key of the custom property 'id' value and an extension of the custom property 'part' value.</li>
@@ -69,7 +69,7 @@ Once all the parts have been received the following processing should be done:
 <li> Save the contents of step 2 to a file using the custom message property 'assetId' value as file name. </li>
 </ol>
 
-## Using this sample
+## Using DirectMethod sample
 1. install required tools:
     - Install [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
     - Install [Putty and PSCP](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
@@ -105,7 +105,7 @@ Once all the parts have been received the following processing should be done:
     ```
 12. Click on Review + Create then Create. 
 13. [Create and provision a single Linux IoT Edge device](edgevm.md)
-14. [Build and execute script](https://github.com/iot-for-all/iotedge-gateway-file-upload-c2d/blob/master/app/README-METHOD-CALL.md) to send the files
+14. [Build and execute script](https://github.com/iot-for-all/iotedge-gateway-file-upload-c2d/blob/master/app/README-DIRECT-METHOD.md) to send the files
 15. SSH in to IoT Edge Gateway device (using Putty) and verify the files are created in /etc/files folder:
     ```Linux
     ls /etc/files
@@ -185,7 +185,7 @@ Once all the parts have been received the following processing should be done:
 <li> Save the contents of step 2 to a file using the custom message property 'assetId' value as file name. </li>
 </ol>
 
-## Using this sample
+## Using C2D sample
 1. install required tools:
     - Install [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
     - Install [Putty and PSCP](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
