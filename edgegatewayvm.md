@@ -35,7 +35,7 @@ Creating **Ubuntu Server LTS** based virtual machine will install the latest Azu
         --name <YOUR_VM_NAME>
     ```
 2. SSH to VM using [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/) and your VM ipAddress (get the ipAddress in portal.azure.com)
-3. Install IoT Edge
+3. Install IoT Edge Gateway
     - 20.04:
         ```Linux
         wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -66,30 +66,67 @@ Creating **Ubuntu Server LTS** based virtual machine will install the latest Azu
     ```Linux
     iotedge version
     ```
-5. Run the following command to create the **"files"** folder for saving the large payloads
+5. Run the following command to create the **"certs"** folder for saving TLS certificates
+    ```Linux
+    sudo mkdir -p -v /etc/certs
+    ```
+6. Create TLS certificate and place them in /etc/certs folder using PSCP tool
+    - Have the following files ready:
+        - Root CA certificate
+        - Device CA certificate
+        - Device CA private key
+    
+        For production scenarios, you should generate those files with your own certificate authority.
+        For development and test scenarios, you can use demo certificates.
+        If you don't have your own certificate authority and want to use demo certificates, follow the instructions in
+        [Create demo certificates to test IoT Edge device features](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-create-test-certificates?view=iotedge-2020-11)
+        to create your files. On that page, you need to take the following steps:
+
+        1. To start, set up the scripts for generating certificates on your device.
+        2. Create a root CA certificate. At the end of those instructions, you'll have a root CA certificate file:
+            - <path>/certs/azure-iot-test-only.root.ca.cert.pem.
+        3. Create IoT Edge device CA certificates. At the end of those instructions, you'll have a device CA certificate and its private key:
+            - <path>/certs/iot-edge-device-ca-<cert name>-full-chain.cert.pem and
+            - <path>/private/iot-edge-device-ca-<cert name>.key.pem
+
+    - Copy above certificates to IoT Edge Gateway using the following PSCP command:
+        ```
+        pscp.exe -l <user> -pw <password> -P 22 -r <path>/<cert_folder> <user>@<YOUR_VM_IP_ADDRESS>:/etc 
+        ```
+    - Verify the certificates copied successfully, execute the following command in SSH window
+        ```Linux
+        ls /etc/certs
+        ```
+7. Run the following command to create the **"files"** folder for saving the large payloads
     ```Linux
     sudo mkdir -p -v /etc/files
     sudo chmod 777 /etc/files
     ```
-6. Provision IoT Edge with its cloud identity
+8. Provision IoT Edge Gateway with its cloud identity
     ```Linux
     sudo nano /etc/aziot/config.toml
     ```
+    - uncomment hostname = "<YOUR_VM_IP_ADDRESS>"
+    - uncomment trust_bundle_cert = "file:///etc/certs/<YOUR_CERT>.root.ca.cert.pem"
     - under Manual provisioning with symmetric key:
         - uncomment [provisioning]
         - uncomment source = "manual"
         - uncomment connection_string = "<YOUR_REGISTERED_IOT_EDGE_CONNECTION_STRING>
+    - under Edge CA certificates
+        - uncomment [edge_ca]
+        - uncomment cert = "file:///etc/certs/<YOUR_DEVICE_CERT>-full-chain.cert.pem"
+        - uncomment pk = "file:///etc/certs/<YOUR_DEVICE_CERT>.key.pem"
     - Save and close nano
 
-7. Apply the configuration and restart IoT Edge runtime by executing the following command in SSH shell
+9. Apply the configuration and restart IoT Edge runtime by executing the following command in SSH shell
     ```Linux
     sudo iotedge config apply
     ```
-8. Check IoT Edge status
+10. Check IoT Edge status
     ```Linux
     sudo iotedge list
     ```
-9. Reboot the VM to refresh the IoT Edge binding
+11. Reboot the VM to refresh the IoT Edge binding
     ```Linux
     sudo reboot
     ```

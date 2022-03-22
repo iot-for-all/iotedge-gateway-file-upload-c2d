@@ -10,7 +10,7 @@
     ```python
     pip install -r requirements.txt
     ```
-3. Open the send_files.py file in vscode and change lines 10 - 12 adding in the path to your root ca cert, your IoT Edge Gateway hostName, and the IoT Edge Gateway device connection string:
+3. Open the send_files_c2d.py file in vscode and change lines 10 - 12 adding in the path to your root ca cert, your IoT Edge Gateway hostName, and the IoT Edge Gateway device connection string:
     ```python
     # device settings - FILL IN YOUR VALUES HERE
     ROOT_CA_CERT_FILE = "<YOUR_ROOT_CA_CERT_FILE_PATH>"
@@ -19,7 +19,7 @@
     ```
 4. The code can then be run either from within Visual Studio Code or the command line with:
     ```
-    python send_files.py
+    python send_files_c2d.py
     ```
 
 Running the above code will push three large payloads to the IoT Edge Gateway device.
